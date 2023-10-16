@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  python-app:
+    build:
+      context: .
+      dockerfile: Dockerfile       # Replace with the name of your Dockerfile if it's different
+    ports:
+      - "5000:5000"
+    environment:
+      - PROCESSES=10                # Set your environment variable here
+    volumes:
+      - ./data:/app/data           # Replace /path/on/host with the host folder you want to mount
