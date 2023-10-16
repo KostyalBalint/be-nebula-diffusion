@@ -1,45 +1,42 @@
 import os
-from flask import Flask, request, jsonify
+
+import objaverse
 from dotenv import load_dotenv
+from flask import Flask, jsonify
+import trimesh
+
+import downloader
 
 load_dotenv(".env")
 
 app = Flask(__name__)
 
-# Sample data as a list of items
-items = [
-    {"id": 1, "name": "Item 1"},
-    {"id": 2, "name": "Item 2"}
-]
+uids = objaverse.load_uids()
+object_paths = downloader.load_object_paths()
+print("Loaded object data")
 
-
-# Define a route to get all items
-@app.route('/items', methods=['GET'])
-def get_items():
-    return jsonify(items)
+def get_path_by_uid(uid):
+    path = object_paths[uid][5:-4]
+    return os.path.join("data", f'{path}.ply')
 
 
 # Define a route to get a single item by ID
-@app.route('/items/<int:item_id>', methods=['GET'])
+@app.route('/annotation/<string:item_id>', methods=['GET'])
 def get_item(item_id):
-    item = next((item for item in items if item["id"] == item_id), None)
-    if item is None:
+    try:
+        annotation = objaverse.load_annotations([item_id])
+        if annotation is None:
+            return jsonify({"message": "Item not found"}), 404
+        return jsonify(annotation)
+    except:
         return jsonify({"message": "Item not found"}), 404
-    return jsonify(item)
 
 
-# Define a route to create a new item
-@app.route('/items', methods=['POST'])
-def create_item():
-    data = request.get_json()
-    if "name" not in data:
-        return jsonify({"message": "Name is required"}), 400
-    new_item = {
-        "id": len(items) + 1,
-        "name": data["name"]
-    }
-    items.append(new_item)
-    return jsonify(new_item), 201
+@app.route('/pointCloud/<string:uid>', methods=['GET'])
+def get_point_cloud(uid):
+    pc = trimesh.load(get_path_by_uid(uid)).vertices.tolist()
+    return jsonify(pc)
+
 
 
 if __name__ == '__main__':
