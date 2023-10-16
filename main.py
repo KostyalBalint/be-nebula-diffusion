@@ -39,7 +39,12 @@ def get_item(item_id):
 @app.route('/pointCloud/<string:uid>', methods=['GET'])
 @cross_origin()
 def get_point_cloud(uid):
-    pc = trimesh.load(get_path_by_uid(uid)).vertices.tolist()
+    mesh = trimesh.load(get_path_by_uid(uid))
+    extents = mesh.extents
+    max_extent = max(extents)
+    scaling_factor = (1.0 / max_extent) * 10
+    mesh.apply_scale(scaling_factor)
+    pc = mesh.vertices.tolist()
     return jsonify(pc)
 
 
