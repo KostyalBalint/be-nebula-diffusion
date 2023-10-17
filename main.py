@@ -4,23 +4,15 @@ import downloader
 import objaverse
 from dotenv import load_dotenv
 from flask import Flask, jsonify
-import trimesh
 from flask_cors import CORS, cross_origin
 
+from get_point_cloud_by_uid import get_point_cloud_by_uid
 
 load_dotenv(".env")
 
 app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
-
-uids = objaverse.load_uids()
-object_paths = downloader.load_object_paths()
-print("Loaded object data")
-
-def get_path_by_uid(uid):
-    path = object_paths[uid][5:-4]
-    return os.path.join("data", f'{path}.ply')
 
 
 # Define a route to get a single item by ID
@@ -39,14 +31,8 @@ def get_item(item_id):
 @app.route('/pointCloud/<string:uid>', methods=['GET'])
 @cross_origin()
 def get_point_cloud(uid):
-    mesh = trimesh.load(get_path_by_uid(uid))
-    extents = mesh.extents
-    max_extent = max(extents)
-    scaling_factor = (1.0 / max_extent) * 10
-    mesh.apply_scale(scaling_factor)
-    pc = mesh.vertices.tolist()
+    pc = get_point_cloud_by_uid(uid, scale=10)
     return jsonify(pc)
-
 
 
 if __name__ == '__main__':
