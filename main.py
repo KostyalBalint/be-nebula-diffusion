@@ -1,18 +1,24 @@
 import os
-import downloader
 
-import objaverse
 from dotenv import load_dotenv
 from flask import Flask, jsonify
 from flask_cors import CORS, cross_origin
 
+import objaverse
 from get_point_cloud_by_uid import get_point_cloud_by_uid
+from search import search_algolia
 
 load_dotenv(".env")
 
 app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
+
+
+@app.route('/search/<string:query>', methods=['GET'])
+@cross_origin()
+def search_with_algolia(query: str):
+    return jsonify(search_algolia(query))
 
 
 # Define a route to get a single item by ID
