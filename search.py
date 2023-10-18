@@ -14,5 +14,5 @@ index = client.init_index(os.getenv("ALGOLIA_INDEX_NAME", "nebula_diffusion"))
 
 def search_algolia(query: str):
     # Search the index and print the results
-    results = index.search("test_record")
+    results = index.search(query)
     return results["hits"]
