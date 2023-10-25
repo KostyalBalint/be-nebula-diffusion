@@ -1,11 +1,12 @@
 import os
 
 from dotenv import load_dotenv
-from flask import Flask, jsonify
+from flask import Flask, jsonify, Response
 from flask_cors import CORS, cross_origin
 
 import objaverse
 from get_point_cloud_by_uid import get_point_cloud_by_uid
+from generate_diffusion import generate_with_diffusion
 from search import search_algolia
 
 load_dotenv(".env")
@@ -39,6 +40,13 @@ def get_item(item_id):
 def get_point_cloud(uid):
     pc = get_point_cloud_by_uid(uid, scale=10)
     return jsonify(pc)
+
+
+@app.route('/diffusionPointCloud/generate', methods=['GET'])
+@cross_origin()
+def gen_with_diffusion_point_cloud_stream():
+
+    return Response(generate_with_diffusion(), mimetype='text/event-stream')
 
 
 if __name__ == '__main__':
