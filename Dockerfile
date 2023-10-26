@@ -1,5 +1,5 @@
 # Use an official Python runtime as a parent image
-FROM pytorch/manylinux-cpu:latest
+FROM anibali/pytorch:2.0.1-nocuda
 
 # Set the working directory in the container
 WORKDIR /app
