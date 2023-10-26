@@ -1,7 +1,10 @@
+import os
+
 from .models.vae_flow import *
 
 ckpt = './diffusion_point_cloud/trained/GEN_airplane.pt'
-device = 'mps'
+device = os.getenv("DEVICE", "cpu")
+print(f'Device: [{device}]')
 sample_num_points = 10000
 batch_size = 1
 
