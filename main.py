@@ -9,6 +9,8 @@ from get_point_cloud_by_uid import get_point_cloud_by_uid
 from generate_diffusion import generate_with_diffusion
 from search import search_algolia
 
+from diffusion_point_cloud.gen import gen_diffusion_point_cloud
+
 load_dotenv(".env")
 
 app = Flask(__name__)
@@ -45,8 +47,7 @@ def get_point_cloud(uid):
 @app.route('/diffusionPointCloud/generate', methods=['GET'])
 @cross_origin()
 def gen_with_diffusion_point_cloud_stream():
-
-    return Response(generate_with_diffusion(), mimetype='text/event-stream')
+    return Response(gen_diffusion_point_cloud(), mimetype='text/event-stream')
 
 
 if __name__ == '__main__':
