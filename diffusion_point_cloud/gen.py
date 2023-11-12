@@ -2,7 +2,15 @@ import os
 
 from .models.vae_flow import *
 
-ckpt = './diffusion_point_cloud/trained/GEN_airplane.pt'
+#From paper
+#ckpt = './diffusion_point_cloud/trained/GEN_airplane.pt'
+
+#Chair
+#ckpt = './diffusion_point_cloud/trained/GEN_chair.pt'
+
+ckpt = './diffusion_point_cloud/trained/objaverse/knife/ckpt_0.000000_5600.pt'
+
+
 device = os.getenv("DEVICE", "cpu")
 print(f'Device: [{device}]')
 sample_num_points = 10000
