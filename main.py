@@ -7,6 +7,7 @@ from flask_cors import CORS, cross_origin
 import objaverse
 from get_point_cloud_by_uid import get_point_cloud_by_uid
 from generate_diffusion import generate_with_diffusion
+from nebula_diffusion.gen_nebula import gen_conditioned
 from search import search_algolia
 
 from diffusion_point_cloud.gen import gen_diffusion_point_cloud
@@ -48,6 +49,13 @@ def get_point_cloud(uid):
 @cross_origin()
 def gen_with_diffusion_point_cloud_stream():
     return Response(gen_diffusion_point_cloud(), mimetype='text/event-stream')
+
+
+@app.route('/nebulaDiffusion/generate/<string:text>', methods=['GET'])
+@cross_origin()
+def gen_with_nebula_diffusion(text):
+    print(f'Generating with text condition: {text}')
+    return Response(gen_conditioned(text), mimetype='text/event-stream')
 
 
 if __name__ == '__main__':

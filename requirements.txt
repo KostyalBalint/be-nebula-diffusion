@@ -7,3 +7,4 @@ numpy~=1.26.1
 algoliasearch~=3.0.0
 torch~=2.0.1
 tqdm~=4.66.1
+transformers~=4.35.0
