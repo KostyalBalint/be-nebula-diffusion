@@ -45,10 +45,10 @@ def get_point_cloud(uid):
     return jsonify(pc)
 
 
-@app.route('/diffusionPointCloud/generate', methods=['GET'])
+@app.route('/diffusionPointCloud/generate/<string:model>', methods=['GET'])
 @cross_origin()
-def gen_with_diffusion_point_cloud_stream():
-    return Response(gen_diffusion_point_cloud(), mimetype='text/event-stream')
+def gen_with_diffusion_point_cloud_stream(model):
+    return Response(gen_diffusion_point_cloud(model), mimetype='text/event-stream')
 
 
 @app.route('/nebulaDiffusion/generate/<string:text>', methods=['GET'])

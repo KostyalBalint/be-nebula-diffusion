@@ -20,7 +20,9 @@ def tokenize_sentences(sentence):
 
     return english_outputs.cpu().numpy()[0]
 
-ckpt = './nebula_diffusion/trained/conditioned/ckpt_0.000000_45000.pt'
+#ckpt = './nebula_diffusion/trained/conditioned/ckpt_0.000000_45000.pt' # Objaverse
+ckpt = './nebula_diffusion/trained/conditioned_shapenet/ckpt_0.000000_100000.pt' # Shapenet - small
+#ckpt = './nebula_diffusion/trained/conditioned_shapenet/ckpt_0.000000_124000.pt' # Shapenet - big
 
 print('Loading model')
 ckpt = torch.load(ckpt, map_location=device)
