@@ -8,8 +8,8 @@ ckpt_airplane = './diffusion_point_cloud/trained/GEN_airplane.pt'
 # Chair
 ckpt_chair = './diffusion_point_cloud/trained/GEN_chair.pt'
 
-ckpt_knife_file = './diffusion_point_cloud/trained/objaverse/knife/ckpt_0.000000_5600.pt'
-ckpt_human_file = './diffusion_point_cloud/trained/objaverse/human/ckpt_0.000000_6500.pt'
+ckpt_knife_file = './diffusion_point_cloud/trained/obja/knife/ckpt_0.000000_5600.pt'
+ckpt_human_file = './diffusion_point_cloud/trained/obja/human/ckpt_0.000000_6500.pt'
 
 device = os.getenv("DEVICE", "cpu")
 print(f'Device: [{device}]')
