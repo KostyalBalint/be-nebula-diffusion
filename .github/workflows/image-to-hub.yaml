@@ -10,8 +10,6 @@ jobs:
     runs-on: ubuntu-latest
     name: Build and push ${{ github.repository }} to GitLab repository
     steps:
-      - checkout: self  # self represents the repo where the initial Pipelines YAML file was found
-        lfs: true
       - name: Login to GitLab
         uses: docker/login-action@v2
         with:
@@ -20,6 +18,8 @@ jobs:
           password: ${{ secrets.GITLAB_PASSWORD }}
 
       - uses: actions/checkout@v3
+        with:
+          lfs: true
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
