@@ -5,12 +5,10 @@ from flask import Flask, jsonify, Response
 from flask_cors import CORS, cross_origin
 
 import objaverse
+from diffusion_point_cloud.gen import gen_diffusion_point_cloud, get_diffusion_model_stats
 from get_point_cloud_by_uid import get_point_cloud_by_uid
-from generate_diffusion import generate_with_diffusion
-from nebula_diffusion.gen_nebula import gen_conditioned
+from nebula_diffusion.gen_nebula import gen_conditioned, get_nebula_model_stats
 from search import search_algolia
-
-from diffusion_point_cloud.gen import gen_diffusion_point_cloud
 
 load_dotenv(".env")
 
@@ -51,11 +49,19 @@ def gen_with_diffusion_point_cloud_stream(model):
     return Response(gen_diffusion_point_cloud(model), mimetype='text/event-stream')
 
 
-@app.route('/nebulaDiffusion/generate/<string:text>', methods=['GET'])
+@app.route('/nebulaDiffusion/generate/<string:model>/<string:text>', methods=['GET'])
 @cross_origin()
-def gen_with_nebula_diffusion(text):
-    print(f'Generating with text condition: {text}')
-    return Response(gen_conditioned(text), mimetype='text/event-stream')
+def gen_with_nebula_diffusion(model, text):
+    print(f'Generating with model: {model}, text condition: {text}')
+    return Response(gen_conditioned(model, text), mimetype='text/event-stream')
+
+@app.route('/getModelStats/<string:model>')
+@cross_origin()
+def get_stats(model):
+    if model == 'airplane' or model == 'chair' or model == 'human' or model == 'knife':
+        return jsonify(get_diffusion_model_stats(model))
+    else:
+        return jsonify(get_nebula_model_stats(model))
 
 
 if __name__ == '__main__':
