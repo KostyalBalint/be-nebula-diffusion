@@ -67,4 +67,5 @@ def get_stats(model):
 if __name__ == '__main__':
     port = os.getenv("PORT", 5000)
     host = os.getenv("HOST", "localhost")
-    app.run(debug=True, port=port, host=host)
+    isDebug = os.getenv("DEBUG", False)
+    app.run(debug=isDebug, port=port, host=host)
